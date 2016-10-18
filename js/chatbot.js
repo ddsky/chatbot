@@ -60,7 +60,7 @@ var ChatBot = function () {
                 }
             },
 
-            // the webknox API: http://webknox.com/api
+            // the spoonacular API: http://spoonacular.com/food-api
             spoonacular: function(apiKey) {
 
                 // the context id for the current conversation
@@ -87,6 +87,65 @@ var ChatBot = function () {
                                         '<div class="button blue" onclick=" ChatBot.addChatEntry(\'more like number ' + (i + 1) + '\',\'human\');ChatBot.react(\'more like ' + (i + 1) + '\');">More like this</div>' +
                                         '</div>' +
                                         '</div>';
+                                }
+
+                            }
+
+                            ChatBot.addChatEntry(content, "bot");
+                            ChatBot.thinking(false);
+                        });
+                    }
+                }
+            },
+
+            duckduckgo: function() {
+
+                return {
+                    react: function (query) {
+                        $.ajax({
+                            type: 'GET',
+                            url: 'http://api.duckduckgo.com/?format=json&pretty=1&q=' + encodeURIComponent(query),
+                            dataType: 'jsonp'
+                            }).done(function (data) {
+
+                            var content = data.AbstractText;
+
+                            // no direct answer? tell about related topics then
+                            if (content == '' && data.RelatedTopics.length > 0) {
+
+                                content = '<p>I found multiple answers for you:</p>';
+
+                                var media = [];
+                                for (var i = 0; i < data.RelatedTopics.length; i++) {
+                                    var ob = data.RelatedTopics[i];
+                                    if (ob.Result == undefined) {
+                                        continue;
+                                    }
+                                    if (ob.Icon.URL != '' && ob.Icon.URL.indexOf(".ico") < 0) {
+                                        media.push(ob.Icon.URL);
+                                    }
+
+                                    content += '<p>' + ob.Result.replace("</a>","</a> ") + '</p>';
+                                }
+
+                                ///content += '<img src="' + ob.Icon.URL + '" align="left" />' +
+
+                                for (i = 0; i < media.length; i++) {
+                                    var m = media[i];
+                                    content += '<img src="' + m + '" style="margin-right:5px"/>';
+                                }
+
+                            } else {
+
+                                if (data.Image != undefined && data.Image != '') {
+
+                                    content += '<br>';
+
+                                    content += '<div class="imgBox">' +
+                                        '<img src="' + data.Image + '" />' +
+                                        '<div class="title">' + data.Heading + '</div>' +
+                                        '</div>';
+
                                 }
 
                             }
@@ -132,6 +191,9 @@ var ChatBot = function () {
             humanName = name;
         },
         addChatEntry: function addChatEntry(text, origin) {
+            if (text == '') {
+                text = 'Sorry, I have no idea.';
+            }
             var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
             entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text);
             $('#chatBotHistory').prepend(entryDiv);
