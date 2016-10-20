@@ -14,6 +14,7 @@ Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [Demo](htt
     </div>
 
 ## Sample Usage
+```javascript
     // initialize the bot
     var config = {
         // what inputs should the bot listen to? this selector should point to at least one input field
@@ -55,7 +56,7 @@ Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [Demo](htt
         },
         "Say 'compute [number] plus [number]' to make the bot your math monkey"
     );
-    
+```
     
     
 
