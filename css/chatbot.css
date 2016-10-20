@@ -4,13 +4,13 @@
     border: none;
     margin-top: 5px;
     font-family: 'open_sanslight', sans-serif !important;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
 }
 
 .chatBotChatEntry * {
     font-family: 'open_sanslight', sans-serif !important;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
 }
 
@@ -81,4 +81,28 @@
 }
 .commandDescription {
     margin-top: 5px;
+}
+
+#chatBotConversationLoadingBar {
+    background-color: darkcyan;
+    height: 2px;
+    width: 0;
+}
+
+.appear {
+    animation-duration: 0.2s;
+    animation-name: appear;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }

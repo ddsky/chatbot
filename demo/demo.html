@@ -8,15 +8,22 @@
         body {
             color: #333;
             background-color: #efefef;
-            font-family: arial,serif;
+            font: 13.34px helvetica,arial,freesans,clean,sans-serif;
         }
         #demo {
-            background-color: #ffffff;
+            /*background-color: #ffffff;*/
             width: 80%;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
             padding: 20px;
+
+            background-color: #F8F8F8;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px #999;
+            line-height: 1.4em;
+            font: 13px helvetica,arial,freesans,clean,sans-serif;
+            color: black;
         }
         #demo input {
             padding: 8px;
@@ -26,7 +33,8 @@
         }
         .button {
             display: inline-block;
-            background-color: #efefef;
+            background-color: darkcyan;
+            color: #fff;
             padding: 8px;
             cursor: pointer;
             float: right;
@@ -49,7 +57,8 @@
     <div id="chatBotCommandDescription"></div>
     <input id="humanInput" type="text" placeholder="Say something" />
 
-    <div class="button" onclick="$('#chatBotCommandDescription').slideToggle();">What can I say?</div>
+    <div class="button" onclick="if (!ChatBot.playConversation(sampleConversation,4000)) {alert('conversation already running');};">Play sample conversation!</div>
+    <div class="button" onclick="$('#chatBotCommandDescription').slideToggle();" style="margin-right:10px">What can I say?</div>
 
     <div style="clear: both;">&nbsp;</div>
 
@@ -61,6 +70,13 @@
 
 
 <script>
+    var sampleConversation = [
+        "Hi",
+        "My name is Fry",
+        "Where is China?",
+        "What is the population of China?",
+        "Bye"
+    ];
     var config = {
         botName: 'Duck Duck Go Bot',
         inputs: '#humanInput',
@@ -69,7 +85,8 @@
     };
     ChatBot.init(config);
     ChatBot.setBotName("Duck Duck Go Bot");
-    ChatBot.addPattern("^hi$", "response", "hi yourself", undefined, "Say 'Hi' to be greeted back.");
+    ChatBot.addPattern("^hi$", "response", "Howdy, friend", undefined, "Say 'Hi' to be greeted back.");
+    ChatBot.addPattern("^bye$", "response", "See you later buddy", undefined, "Say 'Bye' to end the conversation.");
     ChatBot.addPattern("(?:my name is|I'm|I am) (.*)", "response", "hi $1, thanks for talking to me today", function (matches) {
         ChatBot.setHumanName(matches[1]);
     },"Say 'My name is [your name]' or 'I am [name]' to be called that by the bot");

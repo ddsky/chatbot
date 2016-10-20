@@ -25,6 +25,12 @@ var ChatBot = function () {
     // the engines to use for answering queries that are not caught by simple patterns
     var engines;
 
+    // the class(es) to be added for newly added chat entries
+    var appearClass;
+
+    // whether a sample conversation is running
+    var sampleConversationRunning = false;
+
     // list all the predefined commands and the commands of each engine
     function updateCommandDescription() {
         var description = '';
@@ -77,6 +83,67 @@ var ChatBot = function () {
         //console.log(examplePhrases);
 
         $('#chatBotCommandDescription').html(description);
+    }
+
+    // type writer
+    function playConversation(state, pauseLength) {
+
+        setTimeout(function() {
+            var newValue = '';
+            if ($(inputs).val() != '|') {
+                newValue += $(inputs).val();
+            }
+            newValue += state.currentInput.slice(state.start,state.start+1);
+            $(inputs).val(newValue);
+            state.start++;
+
+            if (state.start < state.currentInput.length) {
+                // keep typing
+                playConversation(state, pauseLength);
+            } else {
+
+                // press enter and wait for some time and then write the next entry
+                ChatBot.addChatEntry(state.currentInput, "human");
+                ChatBot.react(state.currentInput);
+                $(inputs).val(state.currentInput);
+
+                setTimeout(function() {
+                    state.conversationArrayIndex++;
+                    state.conversationArrayIndex = state.conversationArrayIndex % state.conversationArray.length;
+
+                    // did we cycle through the conversation array? if so, stop
+                    if (state.conversationArrayIndex == 0) {
+                        $('#chatBotConversationLoadingBar').remove();
+                        sampleConversationRunning = false;
+                        return;
+                    }
+
+                    state.start = 0;
+                    $(inputs).val('|');
+                    state.currentInput = state.conversationArray[state.conversationArrayIndex];
+                    playConversation(state, pauseLength);
+                }, pauseLength);
+
+                var chclb = $('#chatBotConversationLoadingBar');
+                if (chclb.size() == 0) {
+                    chclb = $('<div id="chatBotConversationLoadingBar"></div>');
+                    chclb.css('position','absolute');
+                    $('body').append(chclb);
+                }
+
+                var left =  $(inputs).offset().left;
+                var top = $(inputs).offset().top + $(inputs).outerHeight() - 3;
+                chclb.css('left',left+'px');
+                chclb.css('top',top+'px');
+
+                chclb.animate({
+                    width: $(inputs).outerWidth()+'px',
+                }, pauseLength, function() {
+                    chclb.css('width','0');
+                });
+
+            }
+        }, Math.random()*120+10);
     }
 
     return {
@@ -249,7 +316,8 @@ var ChatBot = function () {
                 inputs: '',
                 inputCapabilityListing: true,
                 engines: [],
-                patterns: []
+                patterns: [],
+                appearClass: 'appear'
             }, options);
 
             botName = settings.botName;
@@ -259,6 +327,7 @@ var ChatBot = function () {
             inputCapabilityListing = settings.inputCapabilityListing;
             engines = settings.engines;
             patterns = settings.patterns;
+            appearClass = settings.appearClass;
 
             // update the command description
             updateCommandDescription();
@@ -283,6 +352,7 @@ var ChatBot = function () {
         },
         setHumanName: function (name) {
             humanName = name;
+            $('.chatBotChatEntry.human .origin').html(name);
         },
         addChatEntry: function addChatEntry(text, origin) {
             if (text == undefined) {
@@ -294,16 +364,21 @@ var ChatBot = function () {
             var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
             entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text);
             $('#chatBotHistory').prepend(entryDiv);
+            entryDiv.addClass(appearClass);
         },
         thinking: function (on) {
             var ti = $('#chatBotThinkingIndicator');
             if (on) {
-                $(inputs).attr('disabled', 'disabled');
+                if (!sampleConversationRunning) {
+                    $(inputs).attr('disabled', 'disabled');
+                }
                 ti.html(thinkingHtml);
             } else {
-                $(inputs).removeAttr('disabled');
-                $(inputs).val('');
-                $(inputs).focus();
+                if (!sampleConversationRunning) {
+                    $(inputs).removeAttr('disabled');
+                    $(inputs).val('');
+                    $(inputs).focus();
+                }
                 ti.html('');
             }
         },
@@ -352,6 +427,29 @@ var ChatBot = function () {
                 engine.react(text);
             }
 
+        },
+        playConversation: function (conversation, pauseLength) {
+
+            if (pauseLength == undefined) {
+                pauseLength = 3000;
+            }
+
+            if (sampleConversationRunning) {
+                return false;
+            }
+
+            sampleConversationRunning = true;
+
+            var state = {
+                start: 0,
+                conversationArrayIndex: 0,
+                conversationArray: conversation,
+                currentInput: conversation[0]
+            };
+
+            playConversation(state, pauseLength);
+
+            return true;
         },
         addPatternObject: function (obj) {
             patterns.push(obj);
