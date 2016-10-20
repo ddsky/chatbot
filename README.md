@@ -58,6 +58,16 @@ ChatBot.addPattern(
     },
     "Say 'compute [number] plus [number]' to make the bot your math monkey"
 );
+
+// how about you let your bot show its capabilities with a sample conversation?
+var sampleConversation = [
+    "Hi",
+    "My name is Botty McBotface",
+    "Bye"
+];
+
+// play the conversation, second parameter is the pause between the inputs in milliseconds
+ChatBot.playConversation(sampleConversation,4000)
 ```
     
     
