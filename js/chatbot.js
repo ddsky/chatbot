@@ -196,7 +196,13 @@ var ChatBot = function () {
             spoonacular: function (apiKey) {
 
                 // patterns that the engine can resolve
-                var capabilities = [];
+                var capabilities = [
+                    "Ask for recipes like 'chicken recipes'",
+                    "Ask for nutrient contents like 'vitamin a in 2 carrots'",
+                    "Convert something with '2 cups of butter in grams'",
+                    "If you want more results, just say 'more'",
+                    "For more similar results say 'more like the first/second/third...'",
+                ];
 
                 // the context id for the current conversation
                 var contextId = Math.random() * 100000;
@@ -437,6 +443,8 @@ var ChatBot = function () {
             if (sampleConversationRunning) {
                 return false;
             }
+
+            $(inputs).val('');
 
             sampleConversationRunning = true;
 
