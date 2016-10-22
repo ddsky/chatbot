@@ -152,7 +152,22 @@ var ChatBot = function () {
             webknox: function (apiKey) {
 
                 // patterns that the engine can resolve
-                var capabilities = [];
+                var capabilities = [
+                    "Ask for stock prices like 'stock price apple' or '[company] stock'.",
+                    "Ask for distances as in 'how far is Perth from Melbourne' or 'distance between [place1] and [place2]'.",
+                    "Want to know what the weather is like, just ask like 'weather in San Diego, California'.",
+                    "Let WebKnox tell you a joke, just say 'tell me a joke'.",
+                    "Convert units, e.g. '2.4 miles in kilometers' or '4 tablespoons to ml?'.",
+                    "Get synonyms for a word, e.g. 'synonyms for car'.",
+                    "Ask for quotes like 'quotes about [topic]' or 'quotes about love'.",
+                    "Ask for quotes from a person 'quotes by [person]' or 'quotes by aristotle'.",
+                    "Ask for recipes like 'spaghetti recipes' or 'chocolate donuts'.",
+                    "Ask for nutrient contents like 'vitamin a in 2 carrots' or 'calories is 1 cup of butter'.",
+                    "Convert ingredients like '2 cups of butter in grams'.",
+                    "If you want more results, just say 'more'.",
+                    "For more similar results say 'more like the first/second/third...'.",
+                    "Or just ask anything that comes to mind like 'Who was pope in 1499?' or 'Who directed braveheart?'.",
+                ];
 
                 // the context id for the current conversation
                 var contextId = Math.random() * 100000;
