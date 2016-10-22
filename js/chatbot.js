@@ -25,11 +25,11 @@ var ChatBot = function () {
     // the engines to use for answering queries that are not caught by simple patterns
     var engines;
 
-    // the class(es) to be added for newly added chat entries
-    var appearClass;
-
     // whether a sample conversation is running
     var sampleConversationRunning = false;
+
+    // a callback for after a chat entry has been added
+    var addChatEntryCallback;
 
     // list all the predefined commands and the commands of each engine
     function updateCommandDescription() {
@@ -159,7 +159,7 @@ var ChatBot = function () {
 
                 return {
                     react: function (query) {
-                        $.get('https://webknox-question-answering.p.mashape.com/bot/converse?mashape-key=' + apiKey + '&contextId=' + contextId + '&text=' + encodeURIComponent(query), function (data) {
+                        $.get('https://webknox-question-answering.p.mashape.com/questions/converse?mashape-key=' + apiKey + '&contextId=' + contextId + '&text=' + encodeURIComponent(query), function (data) {
 
                             var content = data.answerText;
 
@@ -197,8 +197,8 @@ var ChatBot = function () {
 
                 // patterns that the engine can resolve
                 var capabilities = [
-                    "Ask for recipes like 'chicken recipes'",
-                    "Ask for nutrient contents like 'vitamin a in 2 carrots'",
+                    "Ask for recipes like 'chicken recipes' or 'spaghetti with shrimp'",
+                    "Ask for nutrient contents like 'vitamin a in 2 carrots' or 'calories is 1 cup of butter'",
                     "Convert something with '2 cups of butter in grams'",
                     "If you want more results, just say 'more'",
                     "For more similar results say 'more like the first/second/third...'",
@@ -209,7 +209,7 @@ var ChatBot = function () {
 
                 return {
                     react: function (query) {
-                        $.get('https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/bot/converse?mashape-key=' + apiKey + '&contextId=' + contextId + '&text=' + encodeURIComponent(query), function (data) {
+                        $.get('https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/converse?mashape-key=' + apiKey + '&contextId=' + contextId + '&text=' + encodeURIComponent(query), function (data) {
 
                             var content = data.answerText;
 
@@ -323,7 +323,9 @@ var ChatBot = function () {
                 inputCapabilityListing: true,
                 engines: [],
                 patterns: [],
-                appearClass: 'appear'
+                addChatEntryCallback: function(entryDiv, text, origin) {
+                    entryDiv.addClass('appear');
+                }
             }, options);
 
             botName = settings.botName;
@@ -333,7 +335,7 @@ var ChatBot = function () {
             inputCapabilityListing = settings.inputCapabilityListing;
             engines = settings.engines;
             patterns = settings.patterns;
-            appearClass = settings.appearClass;
+            addChatEntryCallback = settings.addChatEntryCallback;
 
             // update the command description
             updateCommandDescription();
@@ -370,7 +372,9 @@ var ChatBot = function () {
             var entryDiv = $('<div class="chatBotChatEntry ' + origin + '"></div>');
             entryDiv.html('<span class="origin">' + (origin == 'bot' ? botName : humanName) + '</span>' + text);
             $('#chatBotHistory').prepend(entryDiv);
-            entryDiv.addClass(appearClass);
+            if (addChatEntryCallback != undefined) {
+                addChatEntryCallback.call(this, entryDiv, text, origin);
+            }
         },
         thinking: function (on) {
             var ti = $('#chatBotThinkingIndicator');

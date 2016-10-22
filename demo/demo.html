@@ -8,7 +8,7 @@
         body {
             color: #333;
             background-color: #efefef;
-            font: 13.34px helvetica,arial,freesans,clean,sans-serif;
+            font: 13px helvetica,arial,freesans,clean,sans-serif;
         }
         #demo {
             /*background-color: #ffffff;*/
@@ -46,6 +46,9 @@
         input:focus {
             outline: none;
         }
+        .chatBotChatEntry {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -81,7 +84,10 @@
         botName: 'Duck Duck Go Bot',
         inputs: '#humanInput',
         inputCapabilityListing: true,
-        engines: [ChatBot.Engines.duckduckgo()]
+        engines: [ChatBot.Engines.duckduckgo()],
+        addChatEntryCallback: function(entryDiv, text, origin) {
+            entryDiv.delay(200).slideDown();
+        }
     };
     ChatBot.init(config);
     ChatBot.setBotName("Duck Duck Go Bot");
