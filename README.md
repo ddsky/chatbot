@@ -5,6 +5,9 @@ A simple chat bot in JavaScript with links to smart conversational APIs such as 
 
 Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [Demo](http://rawgit.com/ddsky/chatbot/master/demo/demo.html)
 
+Here a quick demonstration of the chatbot using the spoonacular conversation engine:
+![spoonacular chatbot](img/spoonacular-chatbot.gif)
+
 ## Set up HTML
 ```html
 <div id="chatBotCommandDescription"></div>
@@ -16,6 +19,9 @@ Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [Demo](htt
 ```
 
 ## Sample Usage
+
+Initialize the bot. That is all you need to get a working chatbot.
+
 ```javascript
 // initialize the bot
 var config = {
@@ -31,11 +37,15 @@ var config = {
     }
 };
 ChatBot.init(config);
+```
 
-// give your bot a name
+Optionally, give your bot a name.
+```javascript
 ChatBot.setBotName("bender");
+```
 
-//// manually define some patterns
+You can now also manually define some patterns that the bot should be able to react to.
+```javascript
 // 1. parameter: the pattern to listen for
 // 2. parameter: either "response" to respond or "rewrite" to rewrite the request
 // 3. parameter: either the response or the rewrite value, or undefined if nothing should happen
@@ -62,8 +72,10 @@ ChatBot.addPattern(
     },
     "Say 'compute [number] plus [number]' to make the bot your math monkey"
 );
+```
 
-// how about you let your bot show its capabilities with a sample conversation?
+How about you let your bot show its capabilities with a sample conversation?
+```javascript
 var sampleConversation = [
     "Hi",
     "My name is Botty McBotface",
@@ -74,7 +86,31 @@ var sampleConversation = [
 ChatBot.playConversation(sampleConversation,4000)
 ```
     
+You can also write your own answer engines, just implement the `react` and `getCapabilities` methods. Here's a template:
+```javascript
+var myengine = function() {
     
+    var capabilities = [
+        "If you say 'hip hip', the bot says hooray"
+    ]
 
+    return {
+        react: function (query) {
+            
+            var content = '';
+            if (query == 'hip hip') {
+                content = 'hooray';
+            }
+            
+            ChatBot.addChatEntry(content, "bot");
+            ChatBot.thinking(false);
+  
+        },
+        getCapabilities: function() {
+            return capabilities;
+        }
+    }
+}();
+```
     
    
