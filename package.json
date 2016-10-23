@@ -1,0 +1,28 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "A simple chat bot in JavaScript with links to smart conversational APIs such as WebKnox (all purpose question answering), spoonacular (food related conversations), and DuckDuckGo Instant Answers (mostly entities like movies, people, and places).",
+  "main": "chatbot.js",
+  "scripts": {
+    "test": "chatbot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddsky/chatbot.git"
+  },
+  "keywords": [
+    "chatbot",
+    "chat",
+    "bot",
+    "ai",
+    "bot",
+    "ecosystem:jquery",
+    "jquery-plugin"
+  ],
+  "author": "David Urbansky",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ddsky/chatbot/issues"
+  },
+  "homepage": "https://github.com/ddsky/chatbot#readme"
+}
