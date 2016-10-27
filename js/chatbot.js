@@ -203,6 +203,9 @@ var ChatBot = function () {
                     },
                     getCapabilities: function () {
                         return capabilities;
+                    },
+                    getSuggestUrl: function() {
+                        return 'https://webknox-question-answering.p.mashape.com/questions/converse/suggest?mashape-key=' + apiKey + '&query=';
                     }
                 }
             },
@@ -253,6 +256,9 @@ var ChatBot = function () {
                     },
                     getCapabilities: function () {
                         return capabilities;
+                    },
+                    getSuggestUrl: function() {
+                        return 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/converse/suggest?mashape-key=' + apiKey + '&query=';
                     }
                 }
             },
@@ -324,6 +330,9 @@ var ChatBot = function () {
                     },
                     getCapabilities: function () {
                         return capabilities;
+                    },
+                    getSuggestUrl: function() {
+                        return null;
                     }
                 }
             }

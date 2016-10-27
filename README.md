@@ -3,7 +3,9 @@ A simple chat bot in JavaScript with links to smart conversational APIs such as 
 
 ## Demo
 
-Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [Demo](http://rawgit.com/ddsky/chatbot/master/demo/demo.html)
+Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [DDG Demo](http://rawgit.com/ddsky/chatbot/master/demo/demo-ddg.html)
+
+This Bot is more advanced using the WebKnox Engine (API key needed): [WebKnox Demo](http://rawgit.com/ddsky/chatbot/master/demo/demo-webknox.html)
 
 Here a quick demonstration of the chatbot using the spoonacular conversation engine:
 ![spoonacular chatbot](img/spoonacular-chatbot.gif)
@@ -86,7 +88,7 @@ var sampleConversation = [
 ChatBot.playConversation(sampleConversation,4000)
 ```
     
-You can also write your own answer engines, just implement the `react` and `getCapabilities` methods. Here's a template:
+You can also write your own answer engines, just implement the `react`, `getCapabilities`,  and `getSuggestUrl` methods. Here's a template:
 ```javascript
 var myengine = function() {
     
@@ -108,6 +110,9 @@ var myengine = function() {
         },
         getCapabilities: function() {
             return capabilities;
+        },
+        getSuggestUrl: function() {
+            return 'https://yourserver/uniboxSuggests?query=';
         }
     }
 }();

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/unibox/1.14.2/js/unibox.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/unibox/1.14.2/css/unibox.min.css" />
     <title>Javascript Chat Bot Demo</title>
     <style>
         body {
@@ -57,6 +59,8 @@
 <link rel="stylesheet" type="text/css" href="../css/chatbot.css" />
 
 <div id="demo">
+    <p>For this demo you need a mashape API key for the <a href="https://market.mashape.com/webknox/question-answering">WebKnox Question Answering API</a>.</p>
+
     <div id="chatBotCommandDescription"></div>
     <input id="humanInput" type="text" placeholder="Say something" />
 
@@ -73,6 +77,11 @@
 
 
 <script>
+
+    // get you mashape api key here: https://market.mashape.com/webknox/question-answering
+    var mashapeApiKey = 'YOUR_MASHAPE_API_KEY';
+    var wx = ChatBot.Engines.webknox(mashapeApiKey);
+
     var sampleConversation = [
         "Hi",
         "My name is Fry",
@@ -81,16 +90,16 @@
         "Bye"
     ];
     var config = {
-        botName: 'Duck Duck Go Bot',
+        botName: 'WebKnox',
         inputs: '#humanInput',
-        inputCapabilityListing: true,
-        engines: [ChatBot.Engines.duckduckgo()],
+        inputCapabilityListing: false,
+        engines: [wx],
         addChatEntryCallback: function(entryDiv, text, origin) {
             entryDiv.delay(200).slideDown();
         }
     };
     ChatBot.init(config);
-    ChatBot.setBotName("Duck Duck Go Bot");
+    ChatBot.setBotName("WebKnox");
     ChatBot.addPattern("^hi$", "response", "Howdy, friend", undefined, "Say 'Hi' to be greeted back.");
     ChatBot.addPattern("^bye$", "response", "See you later buddy", undefined, "Say 'Bye' to end the conversation.");
     ChatBot.addPattern("(?:my name is|I'm|I am) (.*)", "response", "hi $1, thanks for talking to me today", function (matches) {
@@ -100,6 +109,17 @@
     ChatBot.addPattern("compute ([0-9]+) plus ([0-9]+)", "response", undefined, function (matches) {
         ChatBot.addChatEntry("That would be "+(1*matches[1]+1*matches[2])+".","bot");
     },"Say 'compute [number] plus [number]' to make the bot your math monkey");
+
+    // optional but for better suggests we use unibox search suggests
+    $('#humanInput').unibox({
+        // we use the suggest URL from the webknox engine
+        suggestUrl: wx.getSuggestUrl(),
+//        suggestUrl: 'http://localhost:8080/questions/converse/suggest?query=', // the URL that provides the data for the suggest
+        // minimum number of characters before the suggests shows
+        minChars: 1,
+        enterCallbackResult: function(){},
+    });
+
 </script>
 </body>
 </html>
