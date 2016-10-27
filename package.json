@@ -1,6 +1,6 @@
 {
   "name": "chatbot",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A simple chat bot in JavaScript with links to smart conversational APIs such as WebKnox (all purpose question answering), spoonacular (food related conversations), and DuckDuckGo Instant Answers (mostly entities like movies, people, and places).",
   "main": "chatbot.js",
   "scripts": {
