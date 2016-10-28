@@ -8,7 +8,7 @@ Take a look at the JavaScript Chat Bot using the Duck Duck Go Engine: [DDG Demo]
 This Bot is more advanced using the WebKnox Engine (API key needed): [WebKnox Demo](http://rawgit.com/ddsky/chatbot/master/demo/demo-webknox.html)
 
 Here a quick demonstration of the chatbot using the spoonacular conversation engine:
-![spoonacular chatbot](img/spoonacular-chatbot.gif)
+![spoonacular chatbot](img/spoonacular-chatbot-animation.gif)
 
 ## Set up HTML
 ```html
