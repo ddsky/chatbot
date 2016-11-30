@@ -220,6 +220,7 @@ var ChatBot = function () {
                     "Convert something with '2 cups of butter in grams'",
                     "If you want more results, just say 'more'",
                     "For more similar results say 'more like the first/second/third...'",
+                    "Let spoonacular tell you a joke, just say 'tell me a joke'.",
                 ];
 
                 // the context id for the current conversation
