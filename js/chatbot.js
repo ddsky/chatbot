@@ -221,6 +221,7 @@ var ChatBot = function () {
                     "If you want more results, just say 'more'",
                     "For more similar results say 'more like the first/second/third...'",
                     "Let spoonacular tell you a joke, just say 'tell me a joke'.",
+                    "Want to learn some food trivia, just say 'food trivia'.",
                 ];
 
                 // the context id for the current conversation
