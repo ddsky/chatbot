@@ -280,7 +280,7 @@ var ChatBot = function () {
                     react: function (query) {
                         $.ajax({
                             type: 'GET',
-                            url: 'http://api.duckduckgo.com/?format=json&pretty=1&q=' + encodeURIComponent(query),
+                            url: 'https://api.duckduckgo.com/?format=json&pretty=1&q=' + encodeURIComponent(query),
                             dataType: 'jsonp'
                         }).done(function (data) {
 
