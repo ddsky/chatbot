@@ -85,6 +85,9 @@
         inputs: '#humanInput',
         inputCapabilityListing: true,
         engines: [ChatBot.Engines.duckduckgo()],
+        normalizer: [function( text ) {
+            return text.replace('!' , '');
+        } , 'trim' ],
         addChatEntryCallback: function(entryDiv, text, origin) {
             entryDiv.delay(200).slideDown();
         }

@@ -31,6 +31,9 @@ var ChatBot = function () {
     // a callback for after a chat entry has been added
     var addChatEntryCallback;
 
+    // list of normalize human text before check pattern
+    var normalizer = [];
+
     // list all the predefined commands and the commands of each engine
     function updateCommandDescription() {
         var description = '';
@@ -349,6 +352,7 @@ var ChatBot = function () {
                 inputCapabilityListing: true,
                 engines: [],
                 patterns: [],
+                normalizer: [],
                 addChatEntryCallback: function(entryDiv, text, origin) {
                     entryDiv.addClass('appear');
                 }
@@ -362,6 +366,7 @@ var ChatBot = function () {
             engines = settings.engines;
             patterns = settings.patterns;
             addChatEntryCallback = settings.addChatEntryCallback;
+            normalizer = settings.normalizer;
 
             // update the command description
             updateCommandDescription();
@@ -420,6 +425,20 @@ var ChatBot = function () {
         },
         react: function react(text) {
             this.thinking(true);
+
+            // normalize the human text
+            normalizer.map( method => {
+
+                if(
+                    String.prototype[ method ] instanceof Function
+                ) {
+                    // string immuable object
+                    text = text[ method ]();
+                } else if( method instanceof Function ) {
+                    text = method( text ) || text;
+                }
+
+            } ) ;
 
             // check for custom patterns
             for (var i = 0; i < patterns.length; i++) {
